@@ -55,6 +55,11 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+input[type="number"] {
+  width: 6em;
+  margin-left: 0.5em;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

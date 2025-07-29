@@ -1,40 +1,85 @@
-import { useState } from "react";
+import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import EnabledToggle from "@/components/enabled-toggle";
-import reactLogo from "@/assets/react.svg";
-import wxtLogo from "/wxt.svg";
+
+import wxtLogo from "@/assets/wxt.svg";
+import githubLogo from "@/assets/github-mark-white.svg";
+
 import "./app.css";
 import { useIsFirstRender } from "@/hooks/is-first-render";
+import { storage, browser } from "#imports";
+import { STORAGE_DEFAULT } from "@/utils/storage_defaults";
+import { MessageType } from "@/types/message";
+import { StorageType } from "@/types/storage";
+import WidthThresholdInput from "@/components/width-threshold-input";
+
+const getStoredValue = async <T,>(
+  key: string,
+  fallback: T,
+  setState: Dispatch<SetStateAction<T>>
+): Promise<void> => {
+  const storedValue = await storage.getItem(`local:${key}`, {
+    fallback: fallback,
+  });
+  setState(storedValue);
+};
+
+const setStoredValue = async <T,>(key: string, value: T): Promise<void> => {
+  await storage.setItem(`local:${key}`, value);
+};
 
 function App() {
-  const [count, setCount] = useState(0);
-
-  const [enabled, setEnabled] = useState<boolean>(true);
-  const [widthThreshold, setWidthThreshold] = useState<number>(1080);
+  const [enabled, setEnabled] = useState<boolean>(STORAGE_DEFAULT.enabled);
+  const [widthThreshold, setWidthThreshold] = useState<number>(
+    STORAGE_DEFAULT.widthThreshold
+  );
 
   const isFirstRender = useIsFirstRender();
 
+  // Initial state loading from local storage
+  useEffect(() => {
+    getStoredValue("enabled", STORAGE_DEFAULT.enabled, setEnabled);
+    getStoredValue(
+      "widthThreshold",
+      STORAGE_DEFAULT.widthThreshold,
+      setWidthThreshold
+    );
+  }, []);
+
+  useEffect(() => {
+    if (!isFirstRender) {
+      setStoredValue("enabled", enabled);
+      setStoredValue("widthThreshold", widthThreshold);
+
+      const message: MessageType<StorageType> = {
+        changedItem: "config",
+        newValue: {
+          enabled: enabled,
+          widthThreshold: widthThreshold,
+        },
+      };
+
+      browser.runtime.sendMessage(message);
+    }
+  }, [enabled, widthThreshold]);
+
   return (
     <>
-      <div>
+      <EnabledToggle storageKey={enabled} setState={setEnabled} />
+      <WidthThresholdInput
+        storageKey={widthThreshold}
+        setState={setWidthThreshold}
+      />
+      <p className="read-the-docs">
+        Written with WXT
         <a href="https://wxt.dev" target="_blank">
           <img src={wxtLogo} className="logo" alt="WXT logo" />
         </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
+        <a
+          href="https://github.com/regunakyle/firefox-auto-vertical-tab"
+          target="_blank"
+        >
+          <img src={githubLogo} className="logo" alt="Github logo" />
         </a>
-      </div>
-      <EnabledToggle />
-      <h1>WXT + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the WXT and React logos to learn more
       </p>
     </>
   );

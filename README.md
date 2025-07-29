@@ -6,6 +6,13 @@ This is a Firefox ONLY extension built with [WXT](https://wxt.dev/).
 
 Requires Firefox 142 or newer.
 
+## Build
+
+```bash
+npm install
+npm run zip:firefox
+```
+
 ## Limitation
 
 This extension does not work if:

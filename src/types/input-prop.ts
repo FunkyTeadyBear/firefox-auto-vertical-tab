@@ -1,5 +1,7 @@
-import { MessageType } from "@/types/message";
+import { SetStateAction, Dispatch } from "react";
+import { StorageType } from "./storage";
 
-export type InputPropType = MessageType & {
-  isFirstRender: boolean;
+export type InputPropType<T> = {
+  storageKey: T;
+  setState: Dispatch<SetStateAction<T>>;
 };

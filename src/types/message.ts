@@ -1,4 +1,4 @@
-export type MessageType = {
-  outerWidth: number;
-  outerHeight: number;
+export type MessageType<T> = {
+  changedItem: string;
+  newValue: T;
 };

@@ -1,9 +1,6 @@
-export type StorageType = {
-  enabled: boolean;
-  widthThreshold: number;
-};
+import { StorageType } from "@/types/storage";
 
 export const STORAGE_DEFAULT: StorageType = {
-  enabled: false,
+  enabled: true,
   widthThreshold: 1080,
 };

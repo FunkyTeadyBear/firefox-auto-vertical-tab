@@ -1,5 +1,6 @@
 import { MessageType } from "@/types/message";
-import { StorageType, STORAGE_DEFAULT } from "@/utils/storage_defaults";
+import { StorageType } from "@/types/storage";
+import { STORAGE_DEFAULT } from "@/utils/storage_defaults";
 import {
   storage,
   defineBackground,
@@ -62,7 +63,7 @@ export default defineBackground({
       }
     });
 
-    browser.runtime.onMessage.addListener((message: MessageType) => {
+    browser.runtime.onMessage.addListener((message: MessageType<any>) => {
       console.log(message);
 
       storage

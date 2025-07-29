@@ -10,9 +10,9 @@ export default defineContentScript({
     if (ctx.isValid) {
       window.addEventListener("resize", (event) => {
         const target = event.target as Window;
-        const message: MessageType = {
-          outerWidth: target.outerWidth,
-          outerHeight: target.outerHeight,
+        const message: MessageType<number> = {
+          changedItem: "window.outerWidth",
+          newValue: target.outerWidth,
         };
         browser.runtime.sendMessage(message);
       });
