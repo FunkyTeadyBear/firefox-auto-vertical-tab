@@ -1,14 +1,9 @@
-import { useState, useEffect } from "react";
-import { useIsFirstRender } from "@/hooks/is-first-render";
-import { storage } from "#imports";
 import { InputPropType } from "@/types/input-prop";
-
-const STORAGE_KEY = "local:enabled";
 
 function EnabledToggle({ storageKey, setState }: InputPropType<boolean>) {
   return (
-    <div>
-      Extension Status:
+    <div className="input-container">
+      <abbr title="Enable or disable the extension">Extension Status:</abbr>
       <label>
         <input
           type="radio"

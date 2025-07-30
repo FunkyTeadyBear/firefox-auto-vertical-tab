@@ -15,7 +15,7 @@ import WidthThresholdInput from "@/components/width-threshold-input";
 const getStoredValue = async <T,>(
   key: string,
   fallback: T,
-  setState: Dispatch<SetStateAction<T>>
+  setState: Dispatch<SetStateAction<T>>,
 ): Promise<void> => {
   const storedValue = await storage.getItem(`local:${key}`, {
     fallback: fallback,
@@ -30,7 +30,7 @@ const setStoredValue = async <T,>(key: string, value: T): Promise<void> => {
 function App() {
   const [enabled, setEnabled] = useState<boolean>(STORAGE_DEFAULT.enabled);
   const [widthThreshold, setWidthThreshold] = useState<number>(
-    STORAGE_DEFAULT.widthThreshold
+    STORAGE_DEFAULT.widthThreshold,
   );
 
   const isFirstRender = useIsFirstRender();
@@ -41,7 +41,7 @@ function App() {
     getStoredValue(
       "widthThreshold",
       STORAGE_DEFAULT.widthThreshold,
-      setWidthThreshold
+      setWidthThreshold,
     );
   }, []);
 
@@ -64,22 +64,34 @@ function App() {
 
   return (
     <>
+      <h1>Auto Toggle Vertical Tab</h1>
       <EnabledToggle storageKey={enabled} setState={setEnabled} />
       <WidthThresholdInput
         storageKey={widthThreshold}
         setState={setWidthThreshold}
       />
       <p className="read-the-docs">
-        Written with WXT
-        <a href="https://wxt.dev" target="_blank">
-          <img src={wxtLogo} className="logo" alt="WXT logo" />
-        </a>
+        Source Code
         <a
           href="https://github.com/regunakyle/firefox-auto-vertical-tab"
           target="_blank"
+          rel="noreferrer"
         >
           <img src={githubLogo} className="logo" alt="Github logo" />
         </a>
+      </p>
+      <p className="read-the-docs">
+        Written with WXT
+        <a href="https://wxt.dev" target="_blank" rel="noreferrer">
+          <img src={wxtLogo} className="logo" alt="WXT logo" />
+        </a>
+      </p>
+      <p className="read-the-docs">
+        This extension does not work correctly on pages that content scripts
+        cannot run,
+        <br />
+        such as &quot;about:preference&quot;, &quot;accounts.firefox.com&quot;,
+        &quot;support.mozilla.org&quot;
       </p>
     </>
   );

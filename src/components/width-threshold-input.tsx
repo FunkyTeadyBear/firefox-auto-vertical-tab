@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
-import { useIsFirstRender } from "@/hooks/is-first-render";
-import { storage } from "#imports";
 import { InputPropType } from "@/types/input-prop";
 
 function WidthThresholdInput({ storageKey, setState }: InputPropType<number>) {
   return (
-    <div>
+    <div className="input-container">
       <label>
-        Width Threshold (in pixels):
+        <abbr title="Automatically enable (or disable) vertical tabs if the width of currently focused Firefox window is lower than or equal to (or higher than) this value">
+          Width Threshold (in pixels):
+        </abbr>
+
         <input
           type="number"
           value={storageKey}

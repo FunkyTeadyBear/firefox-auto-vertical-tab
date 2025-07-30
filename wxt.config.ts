@@ -6,6 +6,10 @@ export default defineConfig({
   imports: false,
   srcDir: "src",
   manifest: {
+    name: "Auto Toggle Vertical Tab",
     permissions: ["browserSettings", "storage"],
+  },
+  webExt: {
+    firefoxArgs: ["--start-url", "about:debugging#/runtime/this-firefox"],
   },
 });

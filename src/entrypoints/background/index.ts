@@ -29,14 +29,14 @@ export default defineBackground({
 
     const toggleVerticalTabs = (
       window: Browser.windows.Window | undefined,
-      threshold: number
+      threshold: number,
     ) => {
       if (window && window.width) {
         if (window.width <= threshold) {
-          // @ts-ignore
+          // @ts-expect-error browserSettings does not exist in WxtBrowser
           browser.browserSettings.verticalTabs.set({ value: true });
         } else {
-          // @ts-ignore
+          // @ts-expect-error see above
           browser.browserSettings.verticalTabs.set({ value: false });
         }
       }
@@ -63,7 +63,7 @@ export default defineBackground({
       }
     });
 
-    browser.runtime.onMessage.addListener((message: MessageType<any>) => {
+    browser.runtime.onMessage.addListener((message: MessageType<unknown>) => {
       console.log(message);
 
       storage
