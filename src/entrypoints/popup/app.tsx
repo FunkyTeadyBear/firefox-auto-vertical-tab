@@ -71,7 +71,7 @@ function App() {
         setState={setWidthThreshold}
       />
       <p className="read-the-docs">
-        Source Code
+        Source Code (GPLv3)
         <a
           href="https://github.com/regunakyle/firefox-auto-vertical-tab"
           target="_blank"

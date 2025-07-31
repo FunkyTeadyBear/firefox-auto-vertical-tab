@@ -1,6 +1,6 @@
 {
   "name": "firefox-auto-vertical-tab",
-  "description": "Web extension that automatically toggle vertical tab based on window width",
+  "description": "Web extension that automatically toggle vertical tab based on window width.",
   "private": true,
   "version": "1.0.0",
   "type": "module",

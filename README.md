@@ -6,6 +6,8 @@ This is a Firefox ONLY extension built with [WXT](https://wxt.dev/).
 
 Requires Firefox 142 or newer.
 
+This extension does not collect any data.
+
 ## Build
 
 ### Environment
