@@ -1,4 +1,4 @@
-name: Deploy Hugo site
+name: Build and Publish
 
 on:
   push:
@@ -7,15 +7,13 @@ on:
   workflow_dispatch:
 
 jobs:
-  submit:
+  build-and-publish:
     runs-on: ubuntu-latest
     concurrency:
       group: "firefox-auto-vertical-tab"
       cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
-
-      - uses: pnpm/action-setup@v4
 
       - uses: actions/setup-node@v4
         with:
