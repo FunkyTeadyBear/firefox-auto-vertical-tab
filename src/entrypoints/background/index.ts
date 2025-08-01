@@ -16,6 +16,19 @@ export default defineBackground({
 
   // Executed when background is loaded, CANNOT BE ASYNC
   main() {
+    // Assume that user agent cannot be modified by third parties in background scripts
+    const userAgent = window.navigator.userAgent.match(/Firefox\/(\d+)/);
+
+    if (userAgent === null) {
+      console.error("Unknown user agent");
+      return;
+    } else if (parseInt(userAgent[1]) < 142) {
+      console.error(
+        `This extension requires Firefox 142 or higher. Your version: ${userAgent[1]}`,
+      );
+      return;
+    }
+
     // Set default values in storage if they don't exist
     Object.keys(STORAGE_DEFAULT).forEach((key) => {
       const typedKey = key as keyof StorageType;

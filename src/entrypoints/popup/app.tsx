@@ -62,14 +62,44 @@ function App() {
     }
   }, [enabled, widthThreshold]);
 
-  return (
-    <>
-      <h1>Auto Toggle Vertical Tab</h1>
+  let content = (
+    <div>
       <EnabledToggle storageKey={enabled} setState={setEnabled} />
       <WidthThresholdInput
         storageKey={widthThreshold}
         setState={setWidthThreshold}
       />
+    </div>
+  );
+
+  const userAgent = window.navigator.userAgent.match(/Firefox\/(\d+)/);
+
+  if (userAgent === null) {
+    content = (
+      <div>
+        <p>
+          ERROR: Unknown user agent.
+          <br />
+          This extension only works on Firefox 142 or later.
+        </p>
+      </div>
+    );
+  } else if (parseInt(userAgent[1]) < 142) {
+    content = (
+      <div>
+        <p>
+          ERROR: This extension requires Firefox 142 or higher.
+          <br />
+          Your version: {userAgent[1]}
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <h1>Auto Toggle Vertical Tab</h1>
+      {content}
       <p className="read-the-docs">
         Source Code (GPLv3)
         <a
