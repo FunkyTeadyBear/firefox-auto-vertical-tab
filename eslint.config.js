@@ -1,12 +1,12 @@
 //  @ts-check
+import { includeIgnoreFile } from "@eslint/compat";
 import js from "@eslint/js";
-import globals from "globals";
-import tseslint from "typescript-eslint";
+import eslintConfigPrettier from "eslint-config-prettier/flat";
 import pluginReact from "eslint-plugin-react";
 import { defineConfig } from "eslint/config";
-import eslintConfigPrettier from "eslint-config-prettier/flat";
-import { includeIgnoreFile } from "@eslint/compat";
+import globals from "globals";
 import { fileURLToPath } from "node:url";
+import tseslint from "typescript-eslint";
 
 const gitignorePath = fileURLToPath(new URL(".gitignore", import.meta.url));
 

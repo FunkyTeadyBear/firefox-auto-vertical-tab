@@ -1,5 +1,5 @@
+import { ContentScriptContext, browser, defineContentScript } from "#imports";
 import { MessageType } from "@/types/message";
-import { defineContentScript, ContentScriptContext, browser } from "#imports";
 
 export default defineContentScript({
   matches: ["<all_urls>"],

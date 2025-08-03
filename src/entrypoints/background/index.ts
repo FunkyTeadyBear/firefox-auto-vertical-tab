@@ -1,13 +1,13 @@
+import {
+  browser,
+  Browser,
+  defineBackground,
+  storage,
+  StorageItemKey,
+} from "#imports";
 import { MessageType } from "@/types/message";
 import { StorageType } from "@/types/storage";
 import { STORAGE_DEFAULT } from "@/utils/storage_defaults";
-import {
-  storage,
-  defineBackground,
-  browser,
-  StorageItemKey,
-  Browser,
-} from "#imports";
 
 export default defineBackground({
   // Set manifest options

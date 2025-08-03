@@ -1,4 +1,4 @@
-import { SetStateAction, Dispatch } from "react";
+import { Dispatch, SetStateAction } from "react";
 
 export type InputPropType<T> = {
   storageKey: T;

@@ -1,16 +1,16 @@
-import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import EnabledToggle from "@/components/enabled-toggle";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
-import wxtLogo from "@/assets/wxt.svg";
 import githubLogo from "@/assets/github-mark-white.svg";
+import wxtLogo from "@/assets/wxt.svg";
 
-import "./app.css";
+import { browser, storage } from "#imports";
+import WidthThresholdInput from "@/components/width-threshold-input";
 import { useIsFirstRender } from "@/hooks/is-first-render";
-import { storage, browser } from "#imports";
-import { STORAGE_DEFAULT } from "@/utils/storage_defaults";
 import { MessageType } from "@/types/message";
 import { StorageType } from "@/types/storage";
-import WidthThresholdInput from "@/components/width-threshold-input";
+import { STORAGE_DEFAULT } from "@/utils/storage_defaults";
+import "./app.css";
 
 const getStoredValue = async <T,>(
   key: string,

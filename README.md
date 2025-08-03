@@ -40,7 +40,7 @@ npm run zip
 This extension does not work correctly under these situations:
 
 - You resize a Firefox window in a page where content script cannot be loaded, e.g. `about:config`, _[restricted domains](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Content_scripts#restricted_domains)_.
-  
+
   (Changing focused window works correctly though)
 
   If you wish to help, please upvote this feature request in [this Bugzilla](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975)!

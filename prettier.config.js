@@ -1,6 +1,8 @@
 //  @ts-check
 
 /** @type {import('prettier').Config} */
-const config = {};
+const config = {
+  plugins: ["prettier-plugin-organize-imports"],
+};
 
 export default config;
