@@ -7,10 +7,14 @@ export default defineConfig({
   srcDir: "src",
   manifest: {
     name: "Auto Toggle Vertical Tab",
+    description:
+      "Automatically toggle vertical tab based on the width of currently focused window.",
     permissions: ["browserSettings", "storage"],
+    homepage_url: "https://github.com/regunakyle/firefox-auto-vertical-tab",
     browser_specific_settings: {
       gecko: {
         id: "{b7eef7b5-1504-4fe1-a48b-3d08859a7761}",
+        strict_min_version: "142.0",
       },
     },
   },
