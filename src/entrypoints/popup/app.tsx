@@ -6,8 +6,7 @@ import wxtLogo from "@/assets/wxt.svg";
 
 import { browser, storage } from "#imports";
 import WidthThresholdInput from "@/components/width-threshold-input";
-import { useIsFirstRender } from "@/hooks/is-first-render";
-import { MessageType } from "@/types/message";
+import { ConfigMessageType } from "@/types/message";
 import { StorageType } from "@/types/storage";
 import { STORAGE_DEFAULT } from "@/utils/storage_defaults";
 import "./app.css";
@@ -23,8 +22,27 @@ const getStoredValue = async <T,>(
   setState(storedValue);
 };
 
-const setStoredValue = async <T,>(key: string, value: T): Promise<void> => {
-  await storage.setItem(`local:${key}`, value);
+const setConfigStateFunction = <T extends boolean | number>(
+  key: keyof StorageType,
+  setState: Dispatch<SetStateAction<T>>,
+) => {
+  return (value: T) => {
+    // Closure magic
+    if (key === "widthThreshold" && Number.isNaN(value)) {
+      return;
+    }
+
+    setState(value);
+
+    const message: ConfigMessageType = {
+      changedItem: key,
+      newValue: value,
+    };
+
+    storage.setItem(`local:${key}`, value);
+
+    browser.runtime.sendMessage(message);
+  };
 };
 
 function App() {
@@ -32,8 +50,6 @@ function App() {
   const [widthThreshold, setWidthThreshold] = useState<number>(
     STORAGE_DEFAULT.widthThreshold,
   );
-
-  const isFirstRender = useIsFirstRender();
 
   // Initial state loading from local storage
   useEffect(() => {
@@ -45,29 +61,15 @@ function App() {
     );
   }, []);
 
-  useEffect(() => {
-    if (!isFirstRender) {
-      setStoredValue("enabled", enabled);
-      setStoredValue("widthThreshold", widthThreshold);
-
-      const message: MessageType<StorageType> = {
-        changedItem: "config",
-        newValue: {
-          enabled: enabled,
-          widthThreshold: widthThreshold,
-        },
-      };
-
-      browser.runtime.sendMessage(message);
-    }
-  }, [enabled, widthThreshold]);
-
   let content = (
     <div>
-      <EnabledToggle storageKey={enabled} setState={setEnabled} />
+      <EnabledToggle
+        state={enabled}
+        setState={setConfigStateFunction("enabled", setEnabled)}
+      />
       <WidthThresholdInput
-        storageKey={widthThreshold}
-        setState={setWidthThreshold}
+        state={widthThreshold}
+        setState={setConfigStateFunction("widthThreshold", setWidthThreshold)}
       />
     </div>
   );
@@ -115,13 +117,6 @@ function App() {
         <a href="https://wxt.dev" target="_blank" rel="noreferrer">
           <img src={wxtLogo} className="logo" alt="WXT logo" />
         </a>
-      </p>
-      <p className="read-the-docs">
-        This extension does not work correctly on pages that content scripts
-        cannot run,
-        <br />
-        such as &quot;about:preference&quot;, &quot;accounts.firefox.com&quot;,
-        &quot;support.mozilla.org&quot;
       </p>
     </>
   );

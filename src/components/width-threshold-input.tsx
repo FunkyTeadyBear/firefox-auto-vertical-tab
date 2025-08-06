@@ -1,6 +1,9 @@
 import { InputPropType } from "@/types/input-prop";
 
-function WidthThresholdInput({ storageKey, setState }: InputPropType<number>) {
+function WidthThresholdInput({
+  state: storageKey,
+  setState,
+}: InputPropType<number>) {
   return (
     <div className="input-container">
       <label>

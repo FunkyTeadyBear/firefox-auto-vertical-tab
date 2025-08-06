@@ -1,6 +1,9 @@
 import { InputPropType } from "@/types/input-prop";
 
-function EnabledToggle({ storageKey, setState }: InputPropType<boolean>) {
+function EnabledToggle({
+  state: storageKey,
+  setState,
+}: InputPropType<boolean>) {
   return (
     <div className="input-container">
       <abbr title="Enable or disable the extension">Extension Status:</abbr>

@@ -8,17 +8,13 @@ This extension does not collect any data nor send any data to any server.
 
 ## Logic
 
-Check window width when one of the following happens:
+Check the width of currently focused Firefox window periodically (every 0.1 second):
 
-1. You change your focused Firefox window
-2. You resize the currently focused window AND you are not on a page where content scripts cannot run
-
-Then:
-
-1. If window width <= user defined threshold, enable vertical tab
-2. If window width > user defined threshold, disable vertical tab
+1. If width <= user defined threshold, enable vertical tab
+2. If width > user defined threshold, disable vertical tab
 
 The user defined threshold is 1080 (in pixels) by default.
+You can edit this value in the extension popup menu.
 
 ## Build
 
@@ -35,16 +31,7 @@ npm install
 npm run zip
 ```
 
-## Limitation
-
-This extension does not work correctly under these situations:
-
-- You resize a Firefox window in a page where content script cannot be loaded, e.g. `about:config`, _[restricted domains](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Content_scripts#restricted_domains)_.
-
-  (Changing focused window works correctly though)
-
-  If you wish to help, please upvote this feature request in [this Bugzilla](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975)!
-
 ## TODO
 
-- Eliminate the need of content script once `windows.onBoundsChanged` is supported in Firefox. [(Bug 1762975)](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975)
+- Write Playwright tests once Firefox 142 is generally available
+- Rewrite once `windows.onBoundsChanged` is supported in Firefox. [(Bug 1762975)](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975)
