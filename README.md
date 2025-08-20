@@ -21,6 +21,20 @@ You may also choose to reverse the behavior, so that vertical tab is enabled whe
 
 You can edit the settings in the extension popup menu.
 
+## Why use an interval instead of an onresize event?
+
+`windows.onresize` event indeed is the most obvious solution to the problem.
+
+However, I can only use it in content scripts, which does not work in *privileged* domains (e.g. `about:config`, [mozilla domains](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Content_scripts#restricted_domains)).
+
+In addition, with content script, the extension would need access to all domains. This might scare away some users.
+
+Weighting these points, I decided to use an interval in a background script instead. 10 checks per second is not that of a big deal for modern PC anyway.
+
+In fact, there IS a `windows.onBoundsChanged` API ([MDN](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/windows/onBoundsChanged)) that can work in background script. The problem is that Firefox didn't implement it (lol).
+
+Please leave a comment in this [bugzilla](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975) to nudge them to implement it. In the meantime, please also upvote this [per-window vertical tab setting feature request](https://connect.mozilla.org/t5/ideas/vertical-tabs-per-window/idi-p/94064).
+
 ## Build
 
 ### Environment
@@ -38,8 +52,7 @@ npm run zip
 
 ## TODO
 
-- Write Playwright tests once Firefox 142 is generally available
-- Rewrite once `windows.onBoundsChanged` is supported in Firefox. [(Bug 1762975)](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975)
+- Write Playwright tests
 
 ## Attribution
 
