@@ -66,52 +66,58 @@ export default defineBackground({
             console.log(`Interval started, ID: ${interval}`);
           }
         } else {
-          if (key === "widthThreshold") {
-            config.widthThreshold = value as number;
-          } else if (key === "enabled") {
-            config.enabled = value as boolean;
-            if (config.enabled) {
-              interval = setInterval(toggleVerticalTab, delay);
-              console.log(`Interval started, ID: ${interval}`);
-            }
+          switch (key) {
+            case "reverseBehavior":
+              config.reverseBehavior = value as boolean;
+              break;
+            case "widthThreshold":
+              config.widthThreshold = value as number;
+              break;
+            case "enabled":
+              config.enabled = value as boolean;
+              if (config.enabled) {
+                interval = setInterval(toggleVerticalTab, delay);
+                console.log(`Interval started, ID: ${interval}`);
+              }
+              break;
+            default:
+              console.error(`Unknown key: ${key} with value: ${value}`);
           }
         }
       });
     });
 
-    // Clunky way to do it because I can't satisfy typescript with concise code, lol
     browser.runtime.onMessage.addListener((message: ConfigMessageType) => {
       console.log(message);
 
-      if (message.changedItem === "widthThreshold") {
-        if (Number.isNaN(message.newValue)) {
-          config.widthThreshold = 0;
-        }
-        config.widthThreshold = message.newValue as number;
+      switch (message.changedItem) {
+        case "widthThreshold":
+          if (Number.isNaN(message.newValue)) {
+            config.widthThreshold = 0;
+          } else {
+            config.widthThreshold = message.newValue as number;
+          }
+          break;
+        case "enabled":
+          config.enabled = message.newValue as boolean;
 
-        return;
-      }
-
-      if (message.changedItem === "enabled") {
-        config.enabled = message.newValue as boolean;
-
-        if (message.newValue && !interval) {
-          interval = setInterval(toggleVerticalTab, delay);
-          console.log(`Interval started, ID: ${interval}`);
-        }
-        if (!message.newValue && interval) {
-          console.log(`Clearing interval, ID: ${interval}`);
-          clearInterval(interval);
-          interval = null;
-        }
-
-        return;
-      }
-
-      if (message.changedItem === "reverseBehavior") {
-        config.reverseBehavior = message.newValue as boolean;
-
-        return;
+          if (message.newValue && !interval) {
+            interval = setInterval(toggleVerticalTab, delay);
+            console.log(`Interval started, ID: ${interval}`);
+          }
+          if (!message.newValue && interval) {
+            console.log(`Clearing interval, ID: ${interval}`);
+            clearInterval(interval);
+            interval = null;
+          }
+          break;
+        case "reverseBehavior":
+          config.reverseBehavior = message.newValue as boolean;
+          break;
+        default:
+          console.error(
+            `Unexpected message: changedItem ${message.changedItem} with newValue ${message.newValue}`,
+          );
       }
     });
   },
