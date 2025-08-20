@@ -16,6 +16,7 @@ Check the width of currently focused Firefox window periodically (every 0.1 seco
 2. If width > user defined threshold, disable vertical tab
 
 The user defined threshold is 1080 (in pixels) by default.
+
 You may also choose to reverse the behavior, so that vertical tab is enabled when the window width is above the threshold (and vice versa).
 
 You can edit the settings in the extension popup menu.
