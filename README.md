@@ -10,30 +10,30 @@ This extension does not collect any data nor send any data to any server.
 
 ## Logic
 
-Check the width of currently focused Firefox window periodically (every 0.1 second):
+Check the width of currently focused Firefox window every 0.1 second:
 
 1. If width <= user defined threshold, enable vertical tab
 2. If width > user defined threshold, disable vertical tab
 
 The user defined threshold is 1080 (in pixels) by default.
 
-You may also choose to reverse the behavior, so that vertical tab is enabled when the window width is above the threshold (and vice versa).
+You may also choose to reverse this behavior, so that vertical tabs are enabled when the window width is above the threshold (and vice versa).
 
-You can edit the settings in the extension popup menu.
+You can edit these settings in the extension's menu.
 
-## Why use an interval instead of an onresize event?
+## Why use an interval instead of the window.onresize event listener?
 
-`windows.onresize` event indeed is the most obvious solution to the problem.
+The `window.onresize` event listener is indeed the most obvious solution to the problem.
 
-However, I can only use it in content scripts, which does not work in *privileged* domains (e.g. `about:config`, [mozilla domains](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Content_scripts#restricted_domains)).
+However, I can only use it within content scripts, which do not work in *privileged* domains (e.g. `about:config`, [Mozilla domains](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Content_scripts#restricted_domains)).
 
-In addition, with content script, the extension would need access to all domains. This might scare away some users.
+In addition, requiring a content script means the extension would need access to all domains. This might discourage some users from installing it.
 
-Weighting these points, I decided to use an interval in a background script instead. 10 checks per second is not that of a big deal for modern PC anyway.
+Weighing these points, I decided to use an interval in a background script instead. Checking 10 times per second is not much of a burden for modern PCs anyway.
 
-In fact, there IS a `windows.onBoundsChanged` API ([MDN](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/windows/onBoundsChanged)) that can work in background script. The problem is that Firefox didn't implement it (lol).
+In fact, there **is** a `windows.onBoundsChanged` event listener ([MDN](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/windows/onBoundsChanged)) that can work in background script. The problem is that Firefox hasn't implement it (lol).
 
-Please leave a comment in this [bugzilla](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975) to nudge them to implement it. In the meantime, please also upvote this [per-window vertical tab setting feature request](https://connect.mozilla.org/t5/ideas/vertical-tabs-per-window/idi-p/94064).
+Please leave a comment in this [Bugzilla](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975) to nudge them to implement it. In the meantime, please also upvote this [per-window vertical tab setting feature request](https://connect.mozilla.org/t5/ideas/vertical-tabs-per-window/idi-p/94064).
 
 ## Build
 
