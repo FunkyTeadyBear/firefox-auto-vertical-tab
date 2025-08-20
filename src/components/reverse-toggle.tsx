@@ -1,9 +1,11 @@
 import { InputPropType } from "@/types/input-prop";
 
-function EnabledToggle({ state, setState }: InputPropType<boolean>) {
+function ReverseToggle({ state, setState }: InputPropType<boolean>) {
   return (
     <div className="input-container">
-      <abbr title="Enable or disable the extension">Extension Status:</abbr>
+      <abbr title="Enable vertical tab when the window width is ABOVE the threshold (rather than below, which is the default behavior)">
+        Reverse Behavior:
+      </abbr>
       <label>
         <input
           type="radio"
@@ -11,7 +13,7 @@ function EnabledToggle({ state, setState }: InputPropType<boolean>) {
           checked={state}
           onChange={() => setState(true)}
         />
-        Enabled
+        Yes
       </label>
       <label>
         <input
@@ -20,10 +22,10 @@ function EnabledToggle({ state, setState }: InputPropType<boolean>) {
           checked={!state}
           onChange={() => setState(false)}
         />
-        Disabled
+        No
       </label>
     </div>
   );
 }
 
-export default EnabledToggle;
+export default ReverseToggle;

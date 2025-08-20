@@ -5,6 +5,7 @@ import githubLogo from "@/assets/github-mark-white.svg";
 import wxtLogo from "@/assets/wxt.svg";
 
 import { browser, storage } from "#imports";
+import ReverseToggle from "@/components/reverse-toggle";
 import WidthThresholdInput from "@/components/width-threshold-input";
 import { ConfigMessageType } from "@/types/message";
 import { StorageType } from "@/types/storage";
@@ -12,7 +13,7 @@ import { STORAGE_DEFAULT } from "@/utils/storage_defaults";
 import "./app.css";
 
 const getStoredValue = async <T,>(
-  key: string,
+  key: keyof StorageType,
   fallback: T,
   setState: Dispatch<SetStateAction<T>>,
 ): Promise<void> => {
@@ -50,6 +51,9 @@ function App() {
   const [widthThreshold, setWidthThreshold] = useState<number>(
     STORAGE_DEFAULT.widthThreshold,
   );
+  const [reverseBehavior, setReverseBehavior] = useState<boolean>(
+    STORAGE_DEFAULT.reverseBehavior,
+  );
 
   // Initial state loading from local storage
   useEffect(() => {
@@ -58,6 +62,11 @@ function App() {
       "widthThreshold",
       STORAGE_DEFAULT.widthThreshold,
       setWidthThreshold,
+    );
+    getStoredValue(
+      "reverseBehavior",
+      STORAGE_DEFAULT.reverseBehavior,
+      setReverseBehavior,
     );
   }, []);
 
@@ -71,6 +80,10 @@ function App() {
         state={widthThreshold}
         setState={setConfigStateFunction("widthThreshold", setWidthThreshold)}
       />
+      <ReverseToggle
+        state={reverseBehavior}
+        setState={setConfigStateFunction("reverseBehavior", setReverseBehavior)}
+      />
     </div>
   );
 
@@ -82,7 +95,7 @@ function App() {
         <p>
           ERROR: Unknown user agent.
           <br />
-          This extension only works on Firefox 142 or later.
+          This extension only works on Firefox 142 or above.
         </p>
       </div>
     );
@@ -90,7 +103,7 @@ function App() {
     content = (
       <div>
         <p>
-          ERROR: This extension requires Firefox 142 or higher.
+          ERROR: This extension requires Firefox 142 or above.
           <br />
           Your version: {userAgent[1]}
         </p>

@@ -18,6 +18,7 @@ export default defineBackground({
     const config: StorageType = {
       enabled: STORAGE_DEFAULT.enabled,
       widthThreshold: STORAGE_DEFAULT.widthThreshold,
+      reverseBehavior: STORAGE_DEFAULT.reverseBehavior,
     };
 
     if (userAgent === null) {
@@ -25,7 +26,7 @@ export default defineBackground({
       return;
     } else if (parseInt(userAgent[1]) < 142) {
       console.error(
-        `This extension requires Firefox 142 or higher. Your version: ${userAgent[1]}`,
+        `This extension requires Firefox 142 or above. Your version: ${userAgent[1]}`,
       );
       return;
     }
@@ -35,10 +36,14 @@ export default defineBackground({
         if (window.width) {
           if (window.width <= config.widthThreshold) {
             // @ts-expect-error browserSettings does not exist in WxtBrowser
-            browser.browserSettings.verticalTabs.set({ value: true });
+            browser.browserSettings.verticalTabs.set({
+              value: !config.reverseBehavior,
+            });
           } else {
             // @ts-expect-error browserSettings does not exist in WxtBrowser
-            browser.browserSettings.verticalTabs.set({ value: false });
+            browser.browserSettings.verticalTabs.set({
+              value: config.reverseBehavior,
+            });
           }
         }
       });
@@ -74,6 +79,7 @@ export default defineBackground({
       });
     });
 
+    // Clunky way to do it because I can't satisfy typescript with concise code, lol
     browser.runtime.onMessage.addListener((message: ConfigMessageType) => {
       console.log(message);
 
@@ -82,6 +88,8 @@ export default defineBackground({
           config.widthThreshold = 0;
         }
         config.widthThreshold = message.newValue as number;
+
+        return;
       }
 
       if (message.changedItem === "enabled") {
@@ -96,6 +104,14 @@ export default defineBackground({
           clearInterval(interval);
           interval = null;
         }
+
+        return;
+      }
+
+      if (message.changedItem === "reverseBehavior") {
+        config.reverseBehavior = message.newValue as boolean;
+
+        return;
       }
     });
   },
