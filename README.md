@@ -1,5 +1,7 @@
 # Firefox Auto Vertical Tab Toggle
 
+<video src="https://github.com/user-attachments/assets/cc06ef4b-3996-448d-827a-85216857767d"  controls></video>
+
 This is a Firefox ONLY extension built with [WXT](https://wxt.dev/).
 
 Requires Firefox 142 or newer.
@@ -35,3 +37,7 @@ npm run zip
 
 - Write Playwright tests once Firefox 142 is generally available
 - Rewrite once `windows.onBoundsChanged` is supported in Firefox. [(Bug 1762975)](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975)
+
+## Attribution
+
+The app icon (created by Smashicons) is downloaded from [flaticon.com](https://www.flaticon.com/free-icon/network_660484) for free.
