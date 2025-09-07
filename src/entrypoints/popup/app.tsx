@@ -7,6 +7,7 @@ import wxtLogo from "@/assets/wxt.svg";
 import { browser, storage } from "#imports";
 import ReverseToggle from "@/components/reverse-toggle";
 import WidthThresholdInput from "@/components/width-threshold-input";
+import TabCountThresholdInput from "@/components/tab-count-threshold-input";
 import { ConfigMessageType } from "@/types/message";
 import { StorageType } from "@/types/storage";
 import { STORAGE_DEFAULT } from "@/utils/storage_defaults";
@@ -54,6 +55,9 @@ function App() {
   const [reverseBehavior, setReverseBehavior] = useState<boolean>(
     STORAGE_DEFAULT.reverseBehavior,
   );
+  const [tabCountThreshold, setTabCountThreshold] = useState<number>(
+    STORAGE_DEFAULT.tabCountThreshold
+  );
 
   // Initial state loading from local storage
   useEffect(() => {
@@ -67,6 +71,11 @@ function App() {
       "reverseBehavior",
       STORAGE_DEFAULT.reverseBehavior,
       setReverseBehavior,
+    );
+    getStoredValue(
+      "tabCountThreshold", 
+      STORAGE_DEFAULT.tabCountThreshold, 
+      setTabCountThreshold
     );
   }, []);
 
@@ -83,6 +92,10 @@ function App() {
       <ReverseToggle
         state={reverseBehavior}
         setState={setConfigStateFunction("reverseBehavior", setReverseBehavior)}
+      />
+      <TabCountThresholdInput
+        state={tabCountThreshold}
+        setState={setConfigStateFunction("tabCountThreshold", setTabCountThreshold)}
       />
     </div>
   );
