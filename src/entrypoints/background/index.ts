@@ -19,6 +19,7 @@ export default defineBackground({
       enabled: STORAGE_DEFAULT.enabled,
       widthThreshold: STORAGE_DEFAULT.widthThreshold,
       reverseBehavior: STORAGE_DEFAULT.reverseBehavior,
+      tabCountThreshold: STORAGE_DEFAULT.tabCountThreshold,
     };
 
     if (userAgent === null) {
@@ -31,6 +32,23 @@ export default defineBackground({
       return;
     }
 
+    const toggleVerticalTabByTabCount = async () => {
+      try {
+        const tabs = await browser.tabs.query({});
+        const numberOfTabs = tabs.length;
+        if (config.enabled && config.tabCountThreshold && numberOfTabs >= config.tabCountThreshold) {
+          // Enable vertical tabs
+          // @ts-expect-error browserSettings does not exist in WxtBrowser
+          browser.browserSettings.verticalTabs.set({ value: !config.reverseBehavior });
+        } else {
+          // Restore to width-based toggle
+          toggleVerticalTab();
+        }
+      } catch (err) {
+        console.error("Failed to toggle by tab count:", err);
+      }
+    };
+    
     const toggleVerticalTab = () => {
       browser.windows.getLastFocused().then((window) => {
         if (window.width) {
@@ -80,12 +98,23 @@ export default defineBackground({
                 console.log(`Interval started, ID: ${interval}`);
               }
               break;
+            case "tabCountThreshold":
+              config.tabCountThreshold = value as number;
+              break;
             default:
               console.error(`Unknown key: ${key} with value: ${value}`);
           }
         }
       });
     });
+
+    // Listen to tab events and check if toggle needed
+    browser.tabs.onCreated.addListener(toggleVerticalTabByTabCount);
+    browser.tabs.onRemoved.addListener(toggleVerticalTabByTabCount);
+
+    // check on startup
+    toggleVerticalTabByTabCount();
+
 
     browser.runtime.onMessage.addListener((message: ConfigMessageType) => {
       console.log(message);
@@ -114,6 +143,9 @@ export default defineBackground({
         case "reverseBehavior":
           config.reverseBehavior = message.newValue as boolean;
           break;
+        case "tabCountThreshold":
+          config.tabCountThreshold = message.newValue as number;
+          break;  
         default:
           console.error(
             `Unexpected message: changedItem ${message.changedItem} with newValue ${message.newValue}`,
