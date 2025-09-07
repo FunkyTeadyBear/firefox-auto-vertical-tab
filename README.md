@@ -1,5 +1,7 @@
 # Firefox Auto Vertical Tab Toggle
 
+# TAKE THIS FORK IS EXPERIMENTAL 
+
 <video src="https://github.com/user-attachments/assets/cc06ef4b-3996-448d-827a-85216857767d"  controls></video>
 
 This is a Firefox ONLY extension built with [WXT](https://wxt.dev/).
