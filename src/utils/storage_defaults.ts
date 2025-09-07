@@ -4,4 +4,5 @@ export const STORAGE_DEFAULT: StorageType = {
   enabled: true,
   widthThreshold: 1080,
   reverseBehavior: false,
+  tabCountThreshold: number,
 };
