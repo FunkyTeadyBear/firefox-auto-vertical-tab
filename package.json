@@ -12,7 +12,8 @@
     "postinstall": "wxt prepare",
     "submit": "wxt submit --firefox-zip .output/*-firefox.zip --firefox-sources-zip .output/*-sources.zip",
     "lint": "eslint --fix",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test": "echo \"No tests specified\" && exit 0"    
   },
   "dependencies": {
     "react": "^19.1.0",
